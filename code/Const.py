@@ -1,0 +1,21 @@
+
+
+# C
+COLOR_PRIMARY = (11, 17, 76)
+COLOR_WHITE = (255, 255, 255)
+COLOR_RED = (255, 0, 0)
+COLOR_GOLD = (255, 215, 0)
+COLOR_SILVER = (192, 192, 192)
+COLOR_BRONZE = (205, 127, 50)
+
+
+# M
+MENU_OPTION = ("NEW GAME",
+               "HOW TO PLAY",
+               "SCORE",
+               "EXIT")
+
+# W
+WIN_WIDTH = 765
+WIN_HEIGHT = 400
+
