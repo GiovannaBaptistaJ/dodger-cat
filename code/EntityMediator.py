@@ -23,7 +23,6 @@ class EntityMediator:
             return
 
         for rock in rocks:
-            # Ignora pedras acima da tela
             if rock.rect.bottom < 0:
                 continue
 
