@@ -5,13 +5,12 @@ import pygame
 from code.Entity import Entity
 from code.Const import WIN_WIDTH
 
-# Creating class Cat
+
 class Cat(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
         self.speed = 5
         self.alive = True
-
         self.hitbox = self.rect.inflate(-20, -20)
 
         # Frames de morte
@@ -45,15 +44,24 @@ class Cat(Entity):
             pygame.image.load("./asset/02_Run/__Cat_Run_008.png"),
             pygame.image.load("./asset/02_Run/__Cat_Run_009.png"),
         ]
-        self.current_frame = 0  # índice do frame atual
-        self.frame_delay_walk = 5  # quantos ticks de atualização para trocar o frame
+        self.walk_frames = [pygame.transform.scale(img, (64, 64)) for img in self.walk_frames]
+
+        # Inicializa com o primeiro frame
+        self.image = self.walk_frames[0]
+
+        # Controle da animação de caminhada
+        self.current_frame = 0
+        self.frame_delay_walk = 5
         self.frame_counter = 0
 
-        # Som de caminhada (usa canal separado para não interromper música do level)
+        # Som de caminhada (canal separado para não interromper música do level)
         self.walk_sound = pygame.mixer.Sound('./asset/WalkingCat.flac')
-        self.walk_channel = pygame.mixer.Channel(1)  # canal exclusivo para o som de walking
+        self.walk_channel = pygame.mixer.Channel(1)
 
     def move(self):
+        if not self.alive:
+            return  # morto não se move
+
         keys = pygame.key.get_pressed()
         moving = False
 
@@ -64,28 +72,36 @@ class Cat(Entity):
             self.rect.x += self.speed
             moving = True
 
+        # Atualiza a animação de caminhada
         if moving:
-            # Toca o som de caminhada sem interromper a música do level
             if not self.walk_channel.get_busy():
                 self.walk_channel.play(self.walk_sound)
 
-            # Animação de caminhada
             self.frame_counter += 1
             if self.frame_counter >= self.frame_delay_walk:
                 self.frame_counter = 0
                 self.current_frame = (self.current_frame + 1) % len(self.walk_frames)
-            self.image = self.walk_frames[self.current_frame]
+                self.image = self.walk_frames[self.current_frame]
+        else:
+            # Quando parado, mostra o primeiro frame
+            self.image = self.walk_frames[0]
 
+        # Mantém a hitbox alinhada
         self.hitbox.center = self.rect.center
 
     def die(self):
         self.alive = False
+        self.frame_index = 0
+        self.frame_count = 0
 
     def update(self, window):
-        # Animação de morte
-        if self.frame_index < len(self.dead_frames):
-            window.blit(self.dead_frames[self.frame_index], self.rect)
-            self.frame_count += 1
-            if self.frame_count >= self.frame_delay:
-                self.frame_count = 0
-                self.frame_index += 1
+        if self.alive:
+            window.blit(self.image, self.rect)
+        else:
+            # Animação de morte
+            if self.frame_index < len(self.dead_frames):
+                window.blit(self.dead_frames[self.frame_index], self.rect)
+                self.frame_count += 1
+                if self.frame_count >= self.frame_delay:
+                    self.frame_count = 0
+                    self.frame_index += 1
