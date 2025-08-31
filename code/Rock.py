@@ -1,4 +1,3 @@
-# IMPORTS
 from code.Entity import Entity
 import random
 from code.Const import WIN_WIDTH, WIN_HEIGHT
