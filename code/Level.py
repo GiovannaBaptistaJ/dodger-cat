@@ -20,14 +20,12 @@ class Level:
         self.entity_list: list[Entity] = []
         self.bg = Background("./asset/LevelBg.png", (WIN_WIDTH, WIN_HEIGHT))
 
-        # criar o gato
         cat = EntityFactory.get_entity("cat", "Cat", (WIN_WIDTH // 2, WIN_HEIGHT - 50))
         cat.surf = pygame.transform.scale(cat.surf, (40, 40))
         cat.rect = cat.surf.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT - 50))
         cat.hitbox = cat.rect.copy()
         self.entity_list.append(cat)
 
-        # criar pedras
         self.rocks_count = 6
         for _ in range(self.rocks_count):
             rock_x = random.randint(20, WIN_WIDTH - 20)
@@ -42,7 +40,6 @@ class Level:
         self.score_handler = Score()
         self.mediator = EntityMediator(self.entity_list)
 
-        # flags de controle
         self._score_saved = False
         self._level_music_started = False
         self._game_over_music_started = False
@@ -50,7 +47,6 @@ class Level:
     def run(self):
         clock = pygame.time.Clock()
 
-        # Toca música da fase
         if not self._level_music_started:
             pygame.mixer_music.stop()
             pygame.mixer_music.load('./asset/Level.mp3')
@@ -62,17 +58,15 @@ class Level:
             self.bg.draw(self.window)
 
             if not self.mediator.game_over:
-                # Reset flag de música de game over
                 self._game_over_music_started = False
 
-                # Desenhar entidades
                 for ent in self.entity_list:
                     ent.move()
-                    self.window.blit(ent.surf, ent.rect)
-                    ent.hitbox = ent.rect.copy()
 
-                    # Pedras caindo
-                    if isinstance(ent, Rock):
+                    if isinstance(ent, Cat):
+                        ent.update(self.window)
+                    elif isinstance(ent, Rock):
+                        self.window.blit(ent.surf, ent.rect)
                         if ent.rect.top > WIN_HEIGHT:
                             ent.rect.y = random.randint(-200, -50)
                             ent.rect.x = random.randint(20, WIN_WIDTH - 20)
@@ -84,26 +78,24 @@ class Level:
                 self.mediator.update()
 
             else:
-                # game over
                 if not self._score_saved:
                     self.score_handler.add_score(self.mediator.score)
                     self._score_saved = True
 
-                # música do level quando o game over ocorre
                 if self._level_music_started:
                     pygame.mixer_music.stop()
                     self._level_music_started = False
 
-                # toca música de game over
                 if not self._game_over_music_started:
-                    gameover_sound = pygame.mixer.Sound('./asset/GameOver.wav')  # cria Sound
-                    gameover_sound.play()  # toca independente da música do level/menu
+                    gameover_sound = pygame.mixer.Sound('./asset/GameOver.wav')
+                    gameover_sound.play()
                     self._game_over_music_started = True
 
                 for ent in self.entity_list:
                     if isinstance(ent, Cat):
+                        if ent.alive:
+                            ent.die()
                         ent.update(self.window)
-                        ent.die()
                         self.draw_text(50, "GAME OVER!", COLOR_RED, (0, WIN_HEIGHT // 2 - 20), center=True)
                         self.draw_text(18, "Press ENTER to restart", COLOR_WHITE, (0, WIN_HEIGHT // 2 + 20),
                                        center=True)
@@ -114,7 +106,6 @@ class Level:
                 if keys[pygame.K_RETURN]:
                     return "restart"
 
-            # Mostrar score
             self.draw_text(30, f"Score: {self.mediator.score}", COLOR_PRIMARY, (10, 10))
 
             for event in pygame.event.get():
@@ -125,12 +116,10 @@ class Level:
                     pygame.quit()
                     sys.exit()
 
-            # Mostrar fps
             self.draw_text(14, f"fps: {clock.get_fps():.0f}", COLOR_WHITE, (10, WIN_HEIGHT - 35))
 
             pygame.display.flip()
 
-    # função para desenhar o texto na tela
     def draw_text(self, text_size: int, text: str, text_color: tuple, pos: tuple, center: bool = False):
         font: Font = pygame.font.SysFont("Arial Black", size=text_size)
         surf: Surface = font.render(text, True, text_color).convert_alpha()
