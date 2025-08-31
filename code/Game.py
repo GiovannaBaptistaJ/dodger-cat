@@ -12,11 +12,11 @@ class Game:
     def __init__(self):
         pygame.init()
         self.window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
-        self.menu = Menu(self.window)  # cria apenas uma vez
+        self.menu = Menu(self.window)
 
     def run(self):
         while True:
-            option = self.menu.run()  # sempre usa o mesmo objeto Menu
+            option = self.menu.run()
 
             if option == MENU_OPTION[0]:
                 level = Level(self.window, 'MenuBg1')

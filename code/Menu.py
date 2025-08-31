@@ -36,12 +36,12 @@ class Menu:
             self.bg.draw(self.window)
 
             # Title
-            self.menu_text(80, "Dodger Cat", COLOR_PRIMARY, ((WIN_WIDTH / 2), 70))
+            self.menu_text(80, "Dodger Cat", COLOR_PRIMARY, ((WIN_WIDTH / 2), 70), "Elephant")
 
             # Menu options
             for i in range(len(MENU_OPTION)):
                 color = COLOR_WHITE if i == menu_option else COLOR_PRIMARY
-                self.menu_text2(30, MENU_OPTION[i], color, ((WIN_WIDTH / 2), 200 + 45 * i))
+                self.menu_text(30, MENU_OPTION[i], color, ((WIN_WIDTH / 2), 200 + 45 * i), "Arial Black")
 
             pygame.display.flip()
 
@@ -59,14 +59,8 @@ class Menu:
                         return MENU_OPTION[menu_option]
 
 
-    def menu_text(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple):
-        text_font: Font = pygame.font.SysFont("Elephant", size=text_size)
-        text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
-        text_rect: Rect = text_surf.get_rect(center=text_center_pos)
-        self.window.blit(text_surf, text_rect)
-
-    def menu_text2(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple):
-        text_font: Font = pygame.font.SysFont("Arial Black", size=text_size)
+    def menu_text(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple, text_font:str):
+        text_font: Font = pygame.font.SysFont(text_font, size=text_size)
         text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
         text_rect: Rect = text_surf.get_rect(center=text_center_pos)
         self.window.blit(text_surf, text_rect)
@@ -81,7 +75,7 @@ class Menu:
             self.bg.draw(self.window)
 
             # Title
-            self.menu_text(50, "TOP 10 SCORES", COLOR_PRIMARY, (WIN_WIDTH // 2, 50))
+            self.menu_text(50, "TOP 10 SCORES", COLOR_PRIMARY, (WIN_WIDTH // 2, 50), "Elephant")
 
             # Score list
             top_scores = self.score_handler.get_scores()
@@ -102,10 +96,10 @@ class Menu:
                     x_pos = WIN_WIDTH // 2 + 100
                     y_pos = 120 + (idx - 5) * 35
 
-                self.menu_text2(30, f"{idx + 1}º : {score}", color, (x_pos, y_pos))
+                self.menu_text(30, f"{idx + 1}º : {score}", color, (x_pos, y_pos), "Arial Black")
 
             # Quit score menu
-            self.menu_text2(20, "Press ESC to back", COLOR_PRIMARY, (WIN_WIDTH // 2, WIN_HEIGHT - 40))
+            self.menu_text(20, "Press ESC to back", COLOR_PRIMARY, (WIN_WIDTH // 2, WIN_HEIGHT - 40), "Arial Black")
 
             pygame.display.flip()
 
@@ -133,7 +127,7 @@ class Menu:
             self.bg.draw(self.window)
 
             # Title
-            self.menu_text(50, "HOW TO PLAY", COLOR_PRIMARY, (WIN_WIDTH // 2, 50))
+            self.menu_text(50, "HOW TO PLAY", COLOR_PRIMARY, (WIN_WIDTH // 2, 50), "Elephant")
 
             # Instruções (lado esquerdo)
             instructions = [
@@ -145,14 +139,14 @@ class Menu:
 
             start_y = 150
             for line in instructions:
-                self.menu_text2(20, line, COLOR_PRIMARY, (WIN_WIDTH // 2 - 200, start_y))
+                self.menu_text(20, line, COLOR_PRIMARY, (WIN_WIDTH // 2 - 200, start_y), "Arial Black")
                 start_y += 40
 
             # Desenhar imagem do gato (lado direito)
             self.window.blit(cat_img, cat_rect)
 
             # Quit control menu
-            self.menu_text2(20, "Press ESC to back", COLOR_PRIMARY, (WIN_WIDTH // 2, WIN_HEIGHT - 40))
+            self.menu_text(20, "Press ESC to back", COLOR_PRIMARY, (WIN_WIDTH // 2, WIN_HEIGHT - 40), "Arial Black")
 
             pygame.display.flip()
 
