@@ -1,6 +1,3 @@
-# FILE: code/Cat.py
-
-# IMPORTS
 import pygame
 from code.Entity import Entity
 from code.Const import WIN_WIDTH
@@ -13,7 +10,6 @@ class Cat(Entity):
         self.alive = True
         self.hitbox = self.rect.inflate(-20, -20)
 
-        # Frames de morte
         self.dead_frames = [
             pygame.image.load("./asset/05_Dead/__Cat_Dead_000.png"),
             pygame.image.load("./asset/05_Dead/__Cat_Dead_001.png"),
@@ -31,7 +27,6 @@ class Cat(Entity):
         self.frame_delay = 10
         self.frame_count = 0
 
-        # Frames de caminhada
         self.walk_frames = [
             pygame.image.load("./asset/02_Run/__Cat_Run_000.png"),
             pygame.image.load("./asset/02_Run/__Cat_Run_001.png"),
@@ -46,15 +41,12 @@ class Cat(Entity):
         ]
         self.walk_frames = [pygame.transform.scale(img, (64, 64)) for img in self.walk_frames]
 
-        # Inicializa com o primeiro frame
         self.image = self.walk_frames[0]
 
-        # Controle da animação de caminhada
         self.current_frame = 0
         self.frame_delay_walk = 5
         self.frame_counter = 0
 
-        # Som de caminhada (canal separado para não interromper música do level)
         self.walk_sound = pygame.mixer.Sound('./asset/WalkingCat.flac')
         self.walk_channel = pygame.mixer.Channel(1)
 
@@ -72,7 +64,6 @@ class Cat(Entity):
             self.rect.x += self.speed
             moving = True
 
-        # Atualiza a animação de caminhada
         if moving:
             if not self.walk_channel.get_busy():
                 self.walk_channel.play(self.walk_sound)
@@ -83,10 +74,8 @@ class Cat(Entity):
                 self.current_frame = (self.current_frame + 1) % len(self.walk_frames)
                 self.image = self.walk_frames[self.current_frame]
         else:
-            # Quando parado, mostra o primeiro frame
             self.image = self.walk_frames[0]
 
-        # Mantém a hitbox alinhada
         self.hitbox.center = self.rect.center
 
     def die(self):
