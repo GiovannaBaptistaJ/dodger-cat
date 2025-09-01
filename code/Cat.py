@@ -22,7 +22,6 @@ class Cat(Entity):
         ]
         self.dead_frames = [pygame.transform.scale(img, (64, 64)) for img in self.dead_frames]
 
-        # Controle da animação de morte
         self.frame_index = 0
         self.frame_delay = 10
         self.frame_count = 0
@@ -52,7 +51,7 @@ class Cat(Entity):
 
     def move(self):
         if not self.alive:
-            return  # morto não se move
+            return
 
         keys = pygame.key.get_pressed()
         moving = False
@@ -87,7 +86,6 @@ class Cat(Entity):
         if self.alive:
             window.blit(self.image, self.rect)
         else:
-            # Animação de morte
             if self.frame_index < len(self.dead_frames):
                 window.blit(self.dead_frames[self.frame_index], self.rect)
                 self.frame_count += 1
