@@ -18,7 +18,6 @@ class Menu:
         self.start_menu_music()  # Inicia a música ao criar o menu
 
     def start_menu_music(self):
-        # Só toca se ainda não estiver tocando
         if not pygame.mixer_music.get_busy():
             pygame.mixer_music.stop()
             pygame.mixer_music.load('./asset/Menu.mp3')
