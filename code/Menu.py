@@ -20,14 +20,13 @@ class Menu:
     def start_menu_music(self):
         # Só toca se ainda não estiver tocando
         if not pygame.mixer_music.get_busy():
-            pygame.mixer_music.stop()  # garante que qualquer música anterior pare
+            pygame.mixer_music.stop()
             pygame.mixer_music.load('./asset/Menu.mp3')
             pygame.mixer_music.play(-1)
             self._menu_music_started = True
 
     def run(self):
         menu_option = 0
-        # Garantir que a música está tocando ao entrar no menu
         if not pygame.mixer_music.get_busy():
             self.start_menu_music()
 
@@ -117,7 +116,6 @@ class Menu:
         clock = pygame.time.Clock()
         running = True
 
-        # Carregar imagem do gato (ajuste o caminho se necessário)
         cat_img = pygame.image.load('./asset/Cat.png')  # Substitua pelo caminho correto da imagem do gato
         cat_img = pygame.transform.scale(cat_img, (150, 150))  # Ajuste o tamanho conforme necessário
         cat_rect = cat_img.get_rect(center=(WIN_WIDTH // 2 + 200, WIN_HEIGHT // 2))
@@ -129,12 +127,11 @@ class Menu:
             # Title
             self.menu_text(50, "HOW TO PLAY", COLOR_PRIMARY, (WIN_WIDTH // 2, 50), "Elephant")
 
-            # Instruções (lado esquerdo)
             instructions = [
-                "Use as setas esquerda e direita",
-                "para mover o gato.",
-                "Desvie dos obstáculos",
-                "para marcar pontos!"
+                "Use the left and right arrows",
+                "to move the cat.",
+                "Avoid the obstacles",
+                "to score points!"
             ]
 
             start_y = 150
@@ -142,7 +139,6 @@ class Menu:
                 self.menu_text(20, line, COLOR_PRIMARY, (WIN_WIDTH // 2 - 200, start_y), "Arial Black")
                 start_y += 40
 
-            # Desenhar imagem do gato (lado direito)
             self.window.blit(cat_img, cat_rect)
 
             # Quit control menu
