@@ -15,7 +15,7 @@ class Menu:
         self.bg = Background("./asset/MenuBg.png", (WIN_WIDTH, WIN_HEIGHT))
         self.score_handler = Score()
         self._menu_music_started = False
-        self.start_menu_music()  # Inicia a música ao criar o menu
+        self.start_menu_music()
 
     def start_menu_music(self):
         if not pygame.mixer_music.get_busy():
@@ -115,8 +115,8 @@ class Menu:
         clock = pygame.time.Clock()
         running = True
 
-        cat_img = pygame.image.load('./asset/Cat.png')  # Substitua pelo caminho correto da imagem do gato
-        cat_img = pygame.transform.scale(cat_img, (150, 150))  # Ajuste o tamanho conforme necessário
+        cat_img = pygame.image.load('./asset/Cat.png')
+        cat_img = pygame.transform.scale(cat_img, (150, 150))
         cat_rect = cat_img.get_rect(center=(WIN_WIDTH // 2 + 200, WIN_HEIGHT // 2))
 
         while running:

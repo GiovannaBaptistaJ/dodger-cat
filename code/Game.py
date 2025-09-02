@@ -20,7 +20,7 @@ class Game:
 
             if option == MENU_OPTION[0]:
                 level = Level(self.window, 'MenuBg1')
-                level.run()  # joga
+                level.run()
             elif option == MENU_OPTION[1]:
                 self.menu.show_controls()
             elif option == MENU_OPTION[2]:
