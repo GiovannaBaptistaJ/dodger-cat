@@ -1,8 +1,9 @@
+# IMPORTS
 import pygame
 from code.Entity import Entity
 from code.Const import WIN_WIDTH
 
-
+# Creating class Cat
 class Cat(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
